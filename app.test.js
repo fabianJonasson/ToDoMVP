@@ -11,14 +11,9 @@ test('Im alive!', done => {
 });
 
 test('GET /id', done => {
-    const tasks = [
-        {id: 1, desc: 'task 1', date: '2023-10-05'},
-        {id: 2, desc: 'task 2', date: '2023-10-05'}
-    ];
-    
     request(app)
     .get('/2')
-    .expect(200, tasks[1].desc === 'task 2')
+    .expect(200, 'task 2')
     .end(done); 
 });
 
