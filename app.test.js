@@ -1,7 +1,7 @@
 const request = require('supertest');
 
 const app = require('./app');
-const tasks = require('./index').tasks;
+const tasks = require('./routes/index').tasks;
 
 test('Im alive!', done => {
     request(app)
@@ -22,22 +22,35 @@ test('GET /id', done => {
     .end(done); 
 });
 
-test('POST /', async(done) => {
-    const task = {
-        id: tasks.length+1,
-        desc: 'new test', 
-        date: '2023-10-05'
-    };
+    /*afterAll(async () => {
+        await request(app).delete(`/${newTask.id}`)
+      });*/
+      test('POST /', async () => {
+        const newTask = {
+            id: tasks.length+1,
+            desc: 'new test', 
+            date: '2023-10-05'
+        };
+        const count = tasks.length;
 
-    const count = await tasks.length();
-    await request(app)
+        await request(app)
         .post('/')
-        .send(task)
+        .send(newTask);
 
-    const newCount = await tasks.length()
+        const newCount = tasks.length;
+        expect(newCount).toBe(count + 1);
+      });
+
+    /*
+    const count = tasks.length;
+    request(app)
+    .post('/')
+    .send(task)
+
+    const newCount = tasks.length;
     expect(newCount).toBe(count + 1);
-    done();
-});
+    */
+
 
 test('DELETE /id', done => {
     const tasks = [
